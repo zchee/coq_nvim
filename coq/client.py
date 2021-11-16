@@ -1,3 +1,5 @@
+import uvloop
+
 from asyncio.events import AbstractEventLoop
 from concurrent.futures import Executor
 from logging import DEBUG as DEBUG_LV
@@ -38,6 +40,8 @@ def _set_debug() -> None:
 
 class CoqClient(Client):
     def __init__(self, pool: Executor) -> None:
+        uvloop.install()
+
         self._pool = pool
         self._handlers: MutableMapping[str, RpcCallable] = {}
         self._event_queue: SimpleQueue = SimpleQueue()
